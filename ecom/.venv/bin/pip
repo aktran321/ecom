@@ -1,4 +1,4 @@
-#!/Users/khangtran/11-Django-Apps/13-Ecom/.venv/bin/python
+#!/Users/khangtran/11-Django-Apps/13-Ecom/ecom/.venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
