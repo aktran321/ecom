@@ -4,7 +4,6 @@ from django.db import models
 class Category(models.Model):
     name = models.CharField(max_length=255, db_index=True)
     slug = models.SlugField(max_length=255, unique=True)
-    description = models.TextField()
 
     class Meta:
         verbose_name = "category"
@@ -20,6 +19,7 @@ class Product(models.Model):
     description = models.TextField(blank = True)
     price = models.DecimalField(max_digits = 4, decimal_places = 2)
     slug = models.SlugField(max_length=255, unique=True)
+    image = models.ImageField(upload_to = 'images/', null = True, blank = True)
 
     class Meta:
         verbose_name = "product"
