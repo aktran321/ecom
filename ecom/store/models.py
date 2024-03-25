@@ -14,6 +14,9 @@ class Category(models.Model):
     def __str__(self):
         return self.name
     
+    def get_absolute_url(self):
+        return reverse("list-category", args=[self.slug] )
+    
 
 class Product(models.Model):
     category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE, null = True, blank = True)
@@ -32,5 +35,4 @@ class Product(models.Model):
         return self.title
     
     def get_absolute_url(self):
-        print("slug: ", self.slug)
         return reverse("product-info", args=[self.slug] )

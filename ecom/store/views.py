@@ -17,9 +17,18 @@ def categories(request):
     'all_categories': all_categories
   }
 
-def product_info(request, slug):
-  product = get_object_or_404(models.Product, slug=slug)
+def product_info(request, product_slug):
+  product = get_object_or_404(models.Product, slug=product_slug)
   context = {
     'product': product
   }
   return render(request, 'store/product-info.html', context)
+
+def list_category(request, category_slug = None):
+  category = get_object_or_404(models.Category, slug=category_slug)
+  products = models.Product.objects.filter(category=category)
+  context = {
+    'category': category,
+    'products': products
+  }
+  return render(request, 'store/list-category.html', context)
