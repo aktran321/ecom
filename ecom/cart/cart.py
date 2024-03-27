@@ -17,10 +17,13 @@ class Cart():
 
     # if product is in the cart, we only update quantity
     # if product is not in the cart, we add the product to the cart with price and qty
-    def add(self, product, product_qty):
+  def add(self, product, product_qty):
+      print("cart.py has added the product to the cart")
       product_id = str(product.id)
       if product_id in self.cart:
         self.cart[product_id]["qty"] = product_qty
       else:
         self.cart[product_id] = {"price": str(product.price), "qty": product_qty}
       self.session.modified = True
+  def __len__(self):
+    return sum(item["qty"] for item in self.cart.values())

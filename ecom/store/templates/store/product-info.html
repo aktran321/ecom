@@ -56,7 +56,7 @@
                 <button
                   type="button"
                   id="add-button"
-                  value="{{ product.id}} "
+                  value="{{ product.id }}"
                   class="btn btn-secondary btn-sm"
                 >
                   Add to cart
@@ -81,12 +81,18 @@
       url: "{% url 'cart-add' %}",
       data: {
         product_id: $('#add-button').val(),
-        product_quantity: $('#select option:selected').text(),
+        product_quantity: $('#select option:selected').val(),
         csrfmiddlewaretoken: '{{ csrf_token }}',
         action: 'post',
       },
-      success: function (json) {},
-      error: function (xhr, errmsg, err) {},
+      success: function (json) {
+        console.log(json)
+        // upon success ajax post success, the cart-qty in the navbar will be updated
+        document.getElementById('cart-qty').textContent = json.qty
+      },
+      error: function (xhr, errmsg, err) {
+        console.log(errmsg, err)
+      },
     })
   })
 </script>
