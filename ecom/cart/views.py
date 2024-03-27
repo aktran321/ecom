@@ -8,7 +8,9 @@ from django.views.decorators.http import require_POST
 # Create your views here.
 
 def cart_summary(request):
-  return render(request, "cart/cart-summary.html")
+  cart = Cart(request)
+
+  return render(request, "cart/cart-summary.html", {"cart": cart})
 
 @require_POST
 def cart_add(request):

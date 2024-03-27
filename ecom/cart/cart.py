@@ -1,3 +1,6 @@
+from decimal import Decimal
+from store.models import Product
+
 # to check your cart in terminal:
 
 # python manage.py shell
@@ -25,5 +28,19 @@ class Cart():
       else:
         self.cart[product_id] = {"price": str(product.price), "qty": product_qty}
       self.session.modified = True
+
   def __len__(self):
     return sum(item["qty"] for item in self.cart.values())
+  
+  def __iter__(self):
+    all_product_ids = self.cart.keys()
+    products = Product.objects.filter(id__in=all_product_ids)
+    cart = self.cart.copy()
+    for product in products:
+      cart[str(product.id)]["product"] = product
+    for item in cart.values():
+      item["price"] = Decimal(item["price"])
+      item["total"] = item["price"] * item["qty"]
+      yield item
+  def get_total(self):
+    return sum(Decimal(item["price"]) * item["qty"] for item in self.cart.values())
