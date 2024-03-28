@@ -77,7 +77,7 @@
 
                 <button
                   type="button"
-                  id="delete-button"
+                  data-index="{{product.id}}"
                   class="btn btn-danger btn-sm delete-button"
                 >
                   Delete
@@ -99,5 +99,29 @@
     </div>
   </div>
 </main>
+<script>
+  // Delete Button
+  $(document).on("click", ".delete-button", function (e) {
+    e.preventDefault();
+    $.ajax({
+      url: "{% url 'cart-delete' %}",
+      type: "POST",
+      data: {
+        product_id: $(this).data("index"),
+        csrfmiddlewaretoken: "{{ csrf_token }}",
+        action:"post"
+      },
+      success: function (response) {
+        location.reload();
+        // json.qty and json.total are the keys being referenced from the Jsonresponse in
+        // views.py. Deletion occurs, these values are updated, and the DOM is updated
+        document.getElementById("cart_qty").textContent = json.qty;
+        document.getElementById("total").textContent = json.total;
+      },
+      error: function(xhr, errmsg, err) {
 
+      }
+    });
+  });
+</script>
 {% endblock %}
