@@ -50,16 +50,16 @@
 
                 &nbsp;
 
-                <select id="">
+                <select id="select{{product.id}}">
                   <option selected>{{item.qty}}</option>
 
-                  <option value="">1</option>
+                  <option value="1">1</option>
 
-                  <option value="">2</option>
+                  <option value="2">2</option>
 
-                  <option value="">3</option>
+                  <option value="3">3</option>
 
-                  <option value="">4</option>
+                  <option value="4">4</option>
                 </select>
 
                 <br />
@@ -67,7 +67,7 @@
 
                 <button
                   type="button"
-                  id="update-button"
+                  data-index="{{product.id}}"
                   class="btn btn-primary btn-sm update-button"
                 >
                   Update
@@ -123,5 +123,35 @@
       }
     });
   });
+    // Update Button
+    $(document).on("click", ".update-button", function (e) {
+      
+      e.preventDefault();
+
+      var theproductid = $(this).data("index");
+      var productQuantity = $("#select" + theproductid).val();
+      console.log("Product ID:", theproductid);
+      $.ajax({
+        // this url should match what is in urls.py
+        url: "{% url 'cart-update' %}",
+        type: "POST",
+        data: {
+          product_id: $(this).data("index"),
+          product_quantity: productQuantity,
+          csrfmiddlewaretoken: "{{ csrf_token }}",
+          action:"post"
+        },
+        success: function (response) {
+
+          location.reload();
+          // json.qty and json.total are the keys being referenced from the Jsonresponse in
+          // views.py. Deletion occurs, these values are updated, and the DOM is updated
+          document.getElementById("cart_qty").textContent = json.qty;
+          document.getElementById("total").textContent = json.total;
+        },
+        error: function(xhr, errmsg, err) {
+        }
+      });
+    });
 </script>
 {% endblock %}
