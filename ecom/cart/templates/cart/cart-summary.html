@@ -112,7 +112,7 @@
         action:"post"
       },
       success: function (response) {
-        location.reload();
+        location.reload(true);
         // json.qty and json.total are the keys being referenced from the Jsonresponse in
         // views.py. Deletion occurs, these values are updated, and the DOM is updated
         document.getElementById("cart_qty").textContent = json.qty;
@@ -143,7 +143,7 @@
         },
         success: function (response) {
 
-          location.reload();
+          location.reload(true);
           // json.qty and json.total are the keys being referenced from the Jsonresponse in
           // views.py. Deletion occurs, these values are updated, and the DOM is updated
           document.getElementById("cart_qty").textContent = json.qty;
