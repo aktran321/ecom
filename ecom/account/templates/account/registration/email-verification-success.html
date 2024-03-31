@@ -1,1 +1,23 @@
-<h1>Accoutn Verified</h1>
+{% include "store/base.html" %}
+{% load static %}
+
+
+{% block content%}
+<style>
+  body {
+    background-color: gray;
+  }
+</style>
+<body>
+  <br>
+  <div class="container bg-white shadow-md p-5 form-layout">
+    <div class="text-center">
+      <i class="fa fa-check fa-3x text-success" aria-hidden="true"></i>
+      <br><br>
+      <h3><strong>Account Active!</strong></h3>
+      <hr>
+      <p> Proceed to Login</p>
+    </div>
+  </div>
+</body>
+{% endblock %}
