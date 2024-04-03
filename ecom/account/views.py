@@ -79,8 +79,25 @@ def my_login(request):
   context = {"form": form}
   return render(request, "account/my-login.html", context)
 
+# When the user logs out, we kill their session
+# BUT we would like to keep their cart session alive, to persist thier
+# data/choices in the cart
+# so we omit the cart session from the session deletion
 def user_logout(request):
-  auth.logout(request)
+  # kill all sessions
+  # auth.logout(request)
+
+  # kill all sessions except the cart session
+  # Loop through your keys, and delete, except cart session key called 
+  # "session_key"
+  try:
+    for key in list(request.session.keys()):
+      if key == "session_key":
+        continue
+      else:
+        del request.session[key]
+  except KeyError:
+    pass
   return redirect("store")
 
 @login_required(login_url="my-login")
