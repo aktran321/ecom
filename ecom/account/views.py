@@ -12,6 +12,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
+from payment.models import ShippingAddress
+from payment.forms import ShippingForm
+
 
 
 # Create your views here.
@@ -125,3 +128,31 @@ def delete_account(request):
     user.delete()
     return redirect("store")
   return render(request, "account/delete-account.html")
+
+# Shipping view
+@login_required(login_url='my-login')
+def manage_shipping(request):
+
+    try:
+        # Account user with shipment information
+        shipping = ShippingAddress.objects.get(user=request.user.id)
+    except ShippingAddress.DoesNotExist:
+        
+        # Account user with no shipment information
+        shipping = None
+    form = ShippingForm(instance=shipping)
+
+    if request.method == 'POST':
+        form = ShippingForm(request.POST, instance=shipping)
+
+        if form.is_valid():
+            # Assign the user FK on the object
+            shipping_user = form.save(commit=False)
+
+            # Adding the FK itself
+            shipping_user.user = request.user
+            shipping_user.save()
+            messages.info(request, "Update success!")
+            return redirect('dashboard')
+    context = {'form':form}
+    return render(request, 'account/manage-shipping.html', context=context)
