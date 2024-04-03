@@ -146,3 +146,5 @@ EMAIL_USE_TLS = "True"
 # Resources guide
 EMAIL_HOST_USER = "aktran321@gmail.com" # - Enter your GMAIL Address for App password
 EMAIL_HOST_PASSWORD = "xqolobotjqovvtue" # Enter your app password
+
+SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"
