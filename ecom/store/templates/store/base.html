@@ -147,6 +147,12 @@
       </ul>
     </div>
   </nav>
+  {% if messages %}
+    {% for message in messages %}
+      <h5 class = "alert alert-success text-center"> {{message}}</h5>
+    {% endfor %}
+{% endif %}
+
 
   <body>
     {% block content %} {% endblock %}

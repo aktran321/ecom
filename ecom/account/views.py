@@ -10,6 +10,7 @@ from django.contrib.auth.models import User, auth
 from django.contrib.auth import authenticate, login, logout
 
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 
 
@@ -98,6 +99,7 @@ def user_logout(request):
         del request.session[key]
   except KeyError:
     pass
+  messages.success(request, "Logout Success!")
   return redirect("store")
 
 @login_required(login_url="my-login")
