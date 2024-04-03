@@ -12,7 +12,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
-from payment.models import ShippingAddress
+from payment.models import ShippingAddress, Order, OrderItem
 from payment.forms import ShippingForm
 
 
@@ -156,3 +156,18 @@ def manage_shipping(request):
             return redirect('dashboard')
     context = {'form':form}
     return render(request, 'account/manage-shipping.html', context=context)
+
+@login_required(login_url='my-login')
+def track_orders(request):
+
+    try:
+
+        orders = OrderItem.objects.filter(user=request.user)
+
+        context = {'orders':orders}
+
+        return render(request, 'account/track-orders.html', context=context)
+
+    except:
+
+        return render(request, 'account/track-orders.html')
