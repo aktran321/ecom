@@ -23,12 +23,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-l=w4rw_@#gpl3p-fad@2&@ow-=_l=fyv2o_547q-lf0=bx+ulb"
+SECRET_KEY = "django-insecure-l=w4rw_@#gpl3p-fad@2&@ow-=_l=fyv2o_547q-lf0=bx+ulb" #os.getenv("DJANGO_SECRET_KEY")
 
-# SECURITY WARNING: don"t run with debug turned on in production!
-DEBUG = True
+# SECURITY WARNING: don"t run with debug turned to TRUE in production! Should be False
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["andytran.click", "www.andytran.click", "*"]
+
+# Users can access your website, but without this setting, they can't make POST requests
+CSRF_TRUSTED_ORIGINS = ["https://andytran.click", "https://www.andytran.click"] #http://ecom-dev.us-east-1.elasticbeanstalk.com/
 
 
 # Application definition
@@ -87,14 +90,7 @@ WSGI_APPLICATION = "ecom.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-"""
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
-"""
+
 
 
 # Password validation
@@ -172,6 +168,15 @@ AWS_S3_CUSTOM_DOMAIN = "%s.s3.amazonaws.com" % AWS_STORAGE_BUCKET_NAME
 AWS_S3_FILE_OVERWRITE = False
 
 ADMIN_MEDIA_PREFIX = "static/admin/"
+
+"""
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
+}
+"""
 
 # RDS Database Configuration
 
