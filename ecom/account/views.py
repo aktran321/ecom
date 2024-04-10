@@ -35,25 +35,30 @@ def register(request):
   form = CreateUserForm()
   if request.method == "POST":
     form = CreateUserForm(request.POST)
-    if form.is_valid():
-      user = form.save()
-      user.is_active = False
-      user.save()
+    captcha_response = request.POST.get("g-recaptcha-response")
+    if not verify_captcha(captcha_response):
+      messages.error(request, "Invalid Captcha")
+      return redirect("register")
+    else:
+      if form.is_valid():
+        user = form.save()
+        user.is_active = False
+        user.save()
 
-      # Email verification setup 
-      current_site = get_current_site(request)
+        # Email verification setup 
+        current_site = get_current_site(request)
 
-      subject = "Account verification email"
+        subject = "Account verification email"
 
-      message = render_to_string("account/registration/email-verification.html", { 
-        "user": user,
-        "domain": current_site.domain,
-        "uid": urlsafe_base64_encode(force_bytes(user.pk)),
-        "token": user_tokenizer_generate.make_token(user)
-        })
-      user.email_user(subject, message)
+        message = render_to_string("account/registration/email-verification.html", { 
+          "user": user,
+          "domain": current_site.domain,
+          "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+          "token": user_tokenizer_generate.make_token(user)
+          })
+        user.email_user(subject, message)
 
-      return redirect("email-verification-sent")
+        return redirect("email-verification-sent")
   context = {'form': form}
   return render(request, "account/registration/register.html", context)
 
