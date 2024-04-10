@@ -15,6 +15,19 @@ from django.contrib import messages
 from payment.models import ShippingAddress, Order, OrderItem
 from payment.forms import ShippingForm
 
+import requests
+
+
+def verify_captcha(captcha_response):
+  data = {
+    "secret": "6LcA6rYpAAAAAPMd5H0pIim8WvGXuNW2rfbDdm5S",
+    "response": captcha_response
+  }
+
+  r = requests.post("https://www.google.com/recaptcha/api/siteverify", data=data)
+  result = r.json()
+  return result.get("success")
+
 
 
 # Create your views here.
@@ -72,14 +85,19 @@ def email_verification_failed(request):
 def my_login(request):
   form = LoginForm()
   if request.method == "POST":
-    form = LoginForm(request, data=request.POST)
-    if form.is_valid():
-      username = request.POST.get("username")
-      password = request.POST.get("password")
-      user = authenticate(request, username=username, password=password)
-      if user is not None:
-        auth.login(request, user)
-        return redirect("dashboard")
+    captcha_response = request.POST.get("g-recaptcha-response")
+    if not verify_captcha(captcha_response):
+      messages.error(request, "Invalid Captcha")
+      return redirect("my-login")
+    else:
+      form = LoginForm(request, data=request.POST)
+      if form.is_valid():
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+          auth.login(request, user)
+          return redirect("dashboard")
   context = {"form": form}
   return render(request, "account/my-login.html", context)
 

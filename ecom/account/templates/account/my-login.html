@@ -8,7 +8,6 @@
     background-color: gray;
   }
 </style>
-
 <body>
   <br />
   <div class=" container bg-white shadow-md p-5 form-layout">
@@ -19,6 +18,8 @@
       {{form.username|as_crispy_field}}
       <br>
       {{form.password|as_crispy_field}}
+      <br>
+      <div class="g-recaptcha" data-sitekey="6LcA6rYpAAAAACFj2ubg84_1mp7CTDXXoKw8sBGe"></div>
       <br>
       <button
         type="submit"
@@ -32,6 +33,7 @@
       >
       <i class=" fa fa-key" aria-hidden="true"></i>&nbsp; Login
       </button>
+      
       <br><br>
 
       {{form.non_field_errors}}
