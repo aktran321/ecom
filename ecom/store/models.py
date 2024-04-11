@@ -25,7 +25,8 @@ class Product(models.Model):
     description = models.TextField(blank = True)
     price = models.DecimalField(max_digits = 4, decimal_places = 2)
     slug = models.SlugField(max_length=255, unique=True)
-    image = models.ImageField(upload_to = 'images/', null = True, blank = True)
+    image = models.ImageField(upload_to = 'images/', null = True, blank = True) # for image upload
+    image_url = models.URLField(max_length=2000, null=True, blank=True) # manually enter image url
 
     class Meta:
         verbose_name = "product"
