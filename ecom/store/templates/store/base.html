@@ -8,7 +8,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Edenthought</title>
+    <title>Shoptop</title>
 
     <!-- CSS -->
 
@@ -21,7 +21,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
-    <link rel="stylesheet" href="{% static 'css/styles.css'}"> 
+    <link rel="stylesheet" href="{% static 'css/styles.css'}" />
 
     <!-- JavaScript -->
 
@@ -97,32 +97,44 @@
       <ul class="navbar-nav ms-auto">
         {% if user.is_authenticated %}
         <li class="nav-item">
-          <a class="btn btn-alert navbar-btn text-white" type="button" href="{% url 'dashboard' %}">
+          <a
+            class="btn btn-alert navbar-btn text-white"
+            type="button"
+            href="{% url 'dashboard' %}"
+          >
             Dashboard
           </a>
         </li>
         <li class="nav-item">
-          <a class="btn btn-alert navbar-btn text-white" type="button" href="{% url 'user-logout'%}">
+          <a
+            class="btn btn-alert navbar-btn text-white"
+            type="button"
+            href="{% url 'user-logout'%}"
+          >
             Logout
           </a>
         </li>
         {% else %}
         <li class="nav-item">
-          <a class="btn btn-alert navbar-btn text-white" type="button" href="{% url 'register' %}">
+          <a
+            class="btn btn-alert navbar-btn text-white"
+            type="button"
+            href="{% url 'register' %}"
+          >
             Register
           </a>
         </li>
 
         <li class="nav-item">
-          <a class="btn btn-alert navbar-btn text-white" type="button" href="{% url 'my-login'%}">
+          <a
+            class="btn btn-alert navbar-btn text-white"
+            type="button"
+            href="{% url 'my-login'%}"
+          >
             Login
           </a>
         </li>
-        {% endif %}
-
-        
-
-        &nbsp; &nbsp; &nbsp;
+        {% endif %} &nbsp; &nbsp; &nbsp;
 
         <li class="nav-item">
           <a
@@ -134,13 +146,8 @@
             <i class="fa fa-shopping-cart" aria-hidden="true"> </i>
             &nbsp;
             <div id="cart-qty" class="d-inline-flex">
-              {% with qty_amount=cart|length %}
-                {% if qty_amount > 0 %} 
-                  {{qty_amount}} 
-                  {% else %} 
-                    0 
-                {% endif %} 
-              {% endwith %}
+              {% with qty_amount=cart|length %} {% if qty_amount > 0 %}
+              {{qty_amount}} {% else %} 0 {% endif %} {% endwith %}
             </div>
           </a>
         </li>
@@ -149,12 +156,9 @@
       </ul>
     </div>
   </nav>
-  {% if messages %}
-    {% for message in messages %}
-      <h5 class = "alert alert-success text-center"> {{message}}</h5>
-    {% endfor %}
-{% endif %}
-
+  {% if messages %} {% for message in messages %}
+  <h5 class="alert alert-success text-center">{{message}}</h5>
+  {% endfor %} {% endif %}
 
   <body>
     {% block content %} {% endblock %}

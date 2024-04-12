@@ -1,29 +1,46 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from . models import ShippingAddress, Order, OrderItem
 from cart.cart import Cart
 from django.http import JsonResponse
 from django.core.mail import send_mail
 from django.conf import settings
+import requests
+from django.contrib import messages
 
+def verify_captcha(captcha_response):
+    data = {
+        "secret": "6LcA6rYpAAAAAPMd5H0pIim8WvGXuNW2rfbDdm5S",
+        "response": captcha_response
+        }
+
+    r = requests.post("https://www.google.com/recaptcha/api/siteverify", data=data)
+    result = r.json()
+    return result.get("success")
 
 def checkout(request):
 
     # Users with accounts -- Pre-fill the form
-    if request.user.is_authenticated:
+    if request.method == "POST":
+        captcha_reponse = request.POST.get("g-recaptcha-response")
+        if not verify_captcha(captcha_reponse):
+            messages.error(request, "Invalid Captcha")
+            return redirect("checkout")
+        else:
+            if request.user.is_authenticated:
 
-        try:
-            # Authenticated users WITH shipping information 
-            shipping_address = ShippingAddress.objects.get(user=request.user.id)
-            context = {'shipping': shipping_address}
-            return render(request, 'payment/checkout.html', context=context)
-        except:
-            # Authenticated users with NO shipping information
+                try:
+                    # Authenticated users WITH shipping information 
+                    shipping_address = ShippingAddress.objects.get(user=request.user.id)
+                    context = {'shipping': shipping_address}
+                    return render(request, 'payment/checkout.html', context=context)
+                except:
+                    # Authenticated users with NO shipping information
 
-            return render(request, 'payment/checkout.html')
+                    return render(request, 'payment/checkout.html')
 
-    else:
-        # Guest users
-        return render(request, 'payment/checkout.html')
+            else:
+                # Guest users
+                return render(request, 'payment/checkout.html')
 
 
 def complete_order(request):
