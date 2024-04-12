@@ -1,46 +1,29 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from . models import ShippingAddress, Order, OrderItem
 from cart.cart import Cart
 from django.http import JsonResponse
 from django.core.mail import send_mail
 from django.conf import settings
-import requests
-from django.contrib import messages
 
-def verify_captcha(captcha_response):
-    data = {
-        "secret": "6LcA6rYpAAAAAPMd5H0pIim8WvGXuNW2rfbDdm5S",
-        "response": captcha_response
-        }
-
-    r = requests.post("https://www.google.com/recaptcha/api/siteverify", data=data)
-    result = r.json()
-    return result.get("success")
 
 def checkout(request):
 
     # Users with accounts -- Pre-fill the form
-    if request.method == "POST":
-        captcha_reponse = request.POST.get("g-recaptcha-response")
-        if not verify_captcha(captcha_reponse):
-            messages.error(request, "Invalid Captcha")
-            return redirect("checkout")
-        else:
-            if request.user.is_authenticated:
+    if request.user.is_authenticated:
 
-                try:
-                    # Authenticated users WITH shipping information 
-                    shipping_address = ShippingAddress.objects.get(user=request.user.id)
-                    context = {'shipping': shipping_address}
-                    return render(request, 'payment/checkout.html', context=context)
-                except:
-                    # Authenticated users with NO shipping information
+        try:
+            # Authenticated users WITH shipping information 
+            shipping_address = ShippingAddress.objects.get(user=request.user.id)
+            context = {'shipping': shipping_address}
+            return render(request, 'payment/checkout.html', context=context)
+        except:
+            # Authenticated users with NO shipping information
 
-                    return render(request, 'payment/checkout.html')
+            return render(request, 'payment/checkout.html')
 
-            else:
-                # Guest users
-                return render(request, 'payment/checkout.html')
+    else:
+        # Guest users
+        return render(request, 'payment/checkout.html')
 
 
 def complete_order(request):
@@ -79,10 +62,6 @@ def complete_order(request):
 
                 OrderItem.objects.create(order_id=order_id, product=item['product'], quantity=item['qty'],
                 price=item['price'], user=request.user)
-            send_mail("Thank you for your order!" + "\n\n" +
-                    "Your items: " + "\n\n" + 
-                    str(product_list) + "\n\n" +
-                    "Total: " + str(cart.get_total), settings.EMAIL_HOST_USER, [email], fail_silently=False)
         #  2) Create order -> Guest users without an account
 
         else:
@@ -99,7 +78,7 @@ def complete_order(request):
             send_mail("Thank you for your order!" + "\n\n" +
                     "Your items: " + "\n\n" + 
                     str(product_list) + "\n\n" +
-                    "Total: " + str(cart.get_total), settings.EMAIL_HOST_USER, [email], fail_silently=False)
+                    "Total:")
         order_success = True
         response = JsonResponse({'success':order_success})
         return response
