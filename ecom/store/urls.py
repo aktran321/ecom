@@ -8,4 +8,5 @@ urlpatterns = [
   path ('product/<slug:product_slug>/', views.product_info, name='product-info'),
   # individual category
   path ('category/<slug:category_slug>/', views.list_category, name='list-category'),
+  path('send-page-view', views.send_page_view, name='send_page_view'),
 ]
