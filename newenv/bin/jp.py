@@ -1,4 +1,4 @@
-#!/Users/khangtran/11-Django-Apps/13-Ecom/newenv/bin/python
+#!/Users/khangtran/11-Django-Apps/13-Ecom/newenv/bin/python3.12
 
 import sys
 import json

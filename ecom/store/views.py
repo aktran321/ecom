@@ -5,7 +5,7 @@ import boto3
 import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from django_ratelimit.decorators import ratelimit
+
 
 # Create your views here.
 def store(request):
@@ -40,7 +40,6 @@ def list_category(request, category_slug = None):
 
 # Kinesis Data Streams, to monitor data on who checks out the website
 @csrf_exempt
-@ratelimit(key="ip", rate="5/m", block=True, method="POST")
 def send_page_view(request):
   if request.method == "POST":
     try:
