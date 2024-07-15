@@ -3,3 +3,6 @@
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+newenv
+ecom/ecom/settings.py
+ecom/account/views.py
