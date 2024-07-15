@@ -20,7 +20,7 @@ import requests
 
 def verify_captcha(captcha_response):
   data = {
-    "secret": "6LcA6rYpAAAAAPMd5H0pIim8WvGXuNW2rfbDdm5S",
+    "secret": "6Le78gsqAAAAADNaYT5tT0FWx0ncSIfv5mMfvpNI",
     "response": captcha_response
   }
 

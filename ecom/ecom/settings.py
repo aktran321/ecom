@@ -28,7 +28,7 @@ SECRET_KEY = "django-insecure-l=w4rw_@#gpl3p-fad@2&@ow-=_l=fyv2o_547q-lf0=bx+ulb
 # SECURITY WARNING: don"t run with debug turned to TRUE in production! Should be False
 DEBUG = False
 
-ALLOWED_HOSTS = ["shoptop.click", "www.shoptop.click"]
+ALLOWED_HOSTS = ["shoptop.click", "www.shoptop.click", "*"]
 
 # Users can access your website, but without this setting, they can't make POST requests
 CSRF_TRUSTED_ORIGINS = ["https://shoptop.click", "https://www.shoptop.click"] #http://ecom-dev.us-east-1.elasticbeanstalk.com/
